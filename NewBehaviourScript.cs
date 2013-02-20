@@ -34,67 +34,67 @@ public class NewBehaviourScript : MonoBehaviour
     {
         cameraselect();
         if (mainCamera.enabled)
-            camera1();
+            camera1(mainCamera);
         else
-            camera2();
+            camera2(otherCamera);
         reset();
     }
 
 
 
 
-    void camera1()
+    void camera1(Camera Camera)
     {
         if (mainCamera.enabled)
         {
             if (Input.GetKey(KeyCode.W))
             {
-                transform.position += transform.forward * moveSpeed * Time.deltaTime;
+                Camera.transform.position += Camera.transform.forward * moveSpeed * Time.deltaTime;
             }
             if (Input.GetKey(KeyCode.S))
             {
-                transform.position += -transform.forward * moveSpeed * Time.deltaTime;
+                Camera.transform.position += -Camera.transform.forward * moveSpeed * Time.deltaTime;
             }
             if (Input.GetKey(KeyCode.D))
             {
-                transform.position += transform.right * moveSpeed * Time.deltaTime;
+                Camera.transform.position += Camera.transform.right * moveSpeed * Time.deltaTime;
             }
             if (Input.GetKey(KeyCode.A))
             {
-                transform.position += -transform.right * moveSpeed * Time.deltaTime;
+                Camera.transform.position += -Camera.transform.right * moveSpeed * Time.deltaTime;
             }
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y - turnSpeed * Time.deltaTime, transform.localEulerAngles.z);
+                Camera.transform.localEulerAngles = new Vector3(Camera.transform.localEulerAngles.x, Camera.transform.localEulerAngles.y - turnSpeed * Time.deltaTime, Camera.transform.localEulerAngles.z);
             }
             if (Input.GetKey(KeyCode.RightArrow))
             {
-                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + turnSpeed * Time.deltaTime, transform.localEulerAngles.z);
+                Camera.transform.localEulerAngles = new Vector3(Camera.transform.localEulerAngles.x, Camera.transform.localEulerAngles.y + turnSpeed * Time.deltaTime, Camera.transform.localEulerAngles.z);
             }
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x - turnSpeed * Time.deltaTime, transform.localEulerAngles.y, transform.localEulerAngles.z);
+                Camera.transform.localEulerAngles = new Vector3(Camera.transform.localEulerAngles.x - turnSpeed * Time.deltaTime, Camera.transform.localEulerAngles.y, Camera.transform.localEulerAngles.z);
             }
             if (Input.GetKey(KeyCode.DownArrow))
             {
-                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x + turnSpeed * Time.deltaTime, transform.localEulerAngles.y, transform.localEulerAngles.z);
+                Camera.transform.localEulerAngles = new Vector3(Camera.transform.localEulerAngles.x + turnSpeed * Time.deltaTime, Camera.transform.localEulerAngles.y, Camera.transform.localEulerAngles.z);
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                transform.Rotate(0, 30, 0);
+                Camera.transform.Rotate(0, 30, 0);
             }
         }
 
     }
 
-    void camera2()
+    void camera2(Camera Camera)
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
             float h = horizontalSpeed * Input.GetAxis("Mouse X");
             float v = -verticalSpeed * Input.GetAxis("Mouse Y");
-            transform.Rotate (v, h, 0);
+            Camera.transform.Rotate (v, h, 0);
 
         }
 
@@ -102,8 +102,8 @@ public class NewBehaviourScript : MonoBehaviour
         {
             float h = hor * Input.GetAxis("Mouse X");
             float v = -ver * Input.GetAxis("Mouse Y");
-            transform.position += transform.forward * v * Time.deltaTime;
-            transform.position += transform.right * h * Time.deltaTime;
+            Camera.transform.position += Camera.transform.forward * v * Time.deltaTime;
+            Camera.transform.position += Camera.transform.right * h * Time.deltaTime;
         }
 
 
