@@ -5,46 +5,86 @@ using System;
 public class OneCam : MonoBehaviour {
     public float horizontalSpeed = 2.0F;
     public float verticalSpeed = 2.0F;
-    public float x, y, z, deg;
+    public float height, theta, distance, deg, initialDist, initalHeight;;
+    public int stop = 0;
+    public new Vector3 minitial;
     System.IO.StreamReader file;
 	// Use this for initialization
 	void Start () {
-       // minitial = transform.position;
+        minitial = transform.position;
+        initialDist = transform.position.z;
+        initalHeight = transform.position.y;
        // mrot = transform.localEulerAngles;
+        file = new System.IO.StreamReader(@"C:\Users\Kevin\Documents\New Unity Project\Assets\Data.txt");
         action();
         //mainCamera.rect = new Rect(0.0f, 0.0f, 0.5f, 1.0f);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-        action();
+	// FixedUpdate is called 30 times a second
+	void FixedUpdate () {
+        if (stop == 0)
+        {
+            action();
+            //transform.position = minitial;
+        }
 	}
 
     void readStdin()
     {
         //char[] delimiterChars = { ' ', ',', '.', ':', '\t' };
-        string chars = " ,.:\tabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()/?><";
+        string chars = " ,:\tabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()/?><";
         char[] delimiterChars = chars.ToCharArray();
         //char[] delimiterChars = { ' ', ',', '.', ':', '\t', 'a', 'b', 'c', 'd', 'e'};
         string line;
         //line = Console.ReadLine();
-        file =  new System.IO.StreamReader(@"C:\Users\Kevin\Documents\New Unity Project\Assets\Data.txt");
         line = file.ReadLine();
+        if (String.IsNullOrEmpty(line))
+        {
+           // print("asdfasdf");
+            stop = 1;
+            return;
+        }
         string[] words = line.Split(delimiterChars);
-        x = Single.Parse(words[0]);
-        y = Single.Parse(words[1]);
-        z = Single.Parse(words[2]);
-        deg = Single.Parse(words[3]);
+        foreach (string word in words)
+        {
+            print(word);
+        }
+        double x, y, z;
+        double.TryParse(words[0], out x);
+        double.TryParse(words[1], out y);
+        double.TryParse(words[2], out z);
+        //double x = Double.Parse(words[0]);
+        //double y = Double.Parse(words[1]);
+        //double z = Double.Parse(words[2]);
+        height = tofloat(x);
+        theta = tofloat(y);
+        distance = tofloat(z);
+        //deg = Single.Parse(words[3]);
     }
 
-    void setCam(float a, float b, float c, float d)
+    void setCam()
     {
-        transform.position = new Vector3(a, b, c);
-        transform.localEulerAngles = new Vector3(0.0f, 90.0f - d, 0.0f);
+        transform.position = new Vector3(transform.position.x, initalHeight+height, initialDist + distance);
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, 90.0f-theta, transform.localEulerAngles.z);
+        //transform.Rotate(0.0f, transform.localEulerAngles.y - b, 0.0f);
     }
     void action()
     {
         readStdin();
-        setCam(x, y, z, deg);
+        setCam();
+    }
+
+    float tofloat(double input)
+    {
+        float result = (float)input;
+        if (float.IsPositiveInfinity(result))
+        {
+            result = float.MaxValue;
+        }
+        else if (float.IsNegativeInfinity(result))
+        {
+            result = float.MinValue;
+        }
+        return result;
     }
 }
